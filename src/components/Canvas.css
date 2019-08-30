@@ -1,0 +1,148 @@
+.Canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.Canvas .center {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 24px;
+}
+
+.Canvas .react-resizable {
+  position: relative;
+  border: 1px solid #eeeeee;
+  background: white;
+  box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.08);
+}
+
+.Canvas .react-resizable-handle-se {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 0;
+  right: 0;
+  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pg08IS0tIEdlbmVyYXRvcjogQWRvYmUgRmlyZXdvcmtzIENTNiwgRXhwb3J0IFNWRyBFeHRlbnNpb24gYnkgQWFyb24gQmVhbGwgKGh0dHA6Ly9maXJld29ya3MuYWJlYWxsLmNvbSkgLiBWZXJzaW9uOiAwLjYuMSAgLS0+DTwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DTxzdmcgaWQ9IlVudGl0bGVkLVBhZ2UlMjAxIiB2aWV3Qm94PSIwIDAgNiA2IiBzdHlsZT0iYmFja2dyb3VuZC1jb2xvcjojZmZmZmZmMDAiIHZlcnNpb249IjEuMSINCXhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbDpzcGFjZT0icHJlc2VydmUiDQl4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjZweCIgaGVpZ2h0PSI2cHgiDT4NCTxnIG9wYWNpdHk9IjAuMzAyIj4NCQk8cGF0aCBkPSJNIDYgNiBMIDAgNiBMIDAgNC4yIEwgNCA0LjIgTCA0LjIgNC4yIEwgNC4yIDAgTCA2IDAgTCA2IDYgTCA2IDYgWiIgZmlsbD0iIzAwMDAwMCIvPg0JPC9nPg08L3N2Zz4=');
+  background-position: bottom right;
+  padding: 0 3px 3px 0;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  cursor: se-resize;
+}
+
+.Canvas .buttons {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  top: 100%;
+}
+
+.Canvas .buttons .button {
+  outline: none;
+}
+
+.Canvas .buttons .button.clear {
+  color: var(--color-grey);
+}
+
+.Canvas .buttons .button + .button {
+  margin-left: 10px;
+}
+
+.Canvas .preview {
+  position: absolute;
+}
+
+.Canvas .overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(0, 0, 0, 0.64);
+  z-index: 100;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+}
+
+.overlay img {
+  width: 32px;
+  height: 32px;
+}
+
+.overlay img.spinner {
+  animation: spin 2s linear infinite;
+}
+
+.Canvas .overlay p {
+  margin-top: 16px;
+  color: white;
+  max-height: 60%;
+  overflow: hidden;
+}
+
+.Canvas .overlay .button {
+  margin-top: 16px;
+  color: white;
+  outline: none;
+}
+
+.Canvas .overlay a {
+  color: white;
+  font-weight: bold;
+}
+
+.Canvas .ColorPicker,
+.Canvas .StrokePicker {
+  position: absolute;
+}
+
+.Canvas .ColorPicker.front {
+  left: 4px;
+  bottom: 12px;
+}
+
+.Canvas .ColorPicker.back {
+  left: 12px;
+  bottom: 4px;
+}
+
+.Canvas .ColorPicker.back .chrome-picker {
+  transform: translateX(-8px) translateY(-8px);
+}
+
+.Canvas .StrokePicker {
+  left: 40px;
+  bottom: 8px;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+@media (max-width: 768px) {
+  .Canvas .center {
+    transform: translateY(-30px);
+  }
+
+  .Canvas .actions {
+    display: flex;
+    flex-flow: column-reverse;
+  }
+}

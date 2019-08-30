@@ -1,0 +1,24 @@
+.ColorPicker .current {
+  width: 24px;
+  height: 24px;
+  user-select: none;
+}
+
+.ColorPicker .fill {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #7e818b;
+}
+
+.ColorPicker .eraser {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.ColorPicker .chrome-picker {
+  position: absolute;
+  bottom: calc(100% + 8px);
+}

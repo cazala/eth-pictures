@@ -1,0 +1,9 @@
+{
+  "outputPath": "./src/contracts",
+  "contracts": {
+    "EthPictures": {
+      "source": "truffle",
+      "buildFile": "./build/contracts/EthPictures.json"
+    }
+  }
+}

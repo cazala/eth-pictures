@@ -1,0 +1,15 @@
+{
+  "short_name": "ETH Pictures",
+  "name": "Draw your own NFTs",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

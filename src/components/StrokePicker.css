@@ -1,0 +1,33 @@
+.StrokePicker .current {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.StrokePicker .current .size {
+  border-radius: 32px;
+  background: black;
+}
+
+.StrokePicker .rc-slider {
+  position: absolute;
+  top: 6px;
+  left: 35px;
+  width: 200px;
+}
+
+.StrokePicker .rc-slider .rc-slider-track {
+  background: black;
+}
+
+.StrokePicker .rc-slider .rc-slider-handle {
+  border-color: black;
+}
+
+.StrokePicker .rc-slider .rc-slider-handle:focus {
+  border-color: black;
+  box-shadow: none;
+}

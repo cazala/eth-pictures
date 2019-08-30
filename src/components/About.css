@@ -1,0 +1,30 @@
+.About {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 50px;
+}
+
+.About header {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 32px;
+}
+
+.About a {
+  color: black;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .About {
+    margin: 0px 24px;
+  }
+}

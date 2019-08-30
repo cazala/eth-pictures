@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "name": "eth.pictures",
+  "alias": "eth.pictures",
+  "build": {
+    "env": {
+      "REACT_APP_CONTRACT_ADDRESS": "0x74F1241Adda635f3F2e214543A39beE0bB7c0FeF",
+      "REACT_APP_OPENSEA_API": "https://api.opensea.io",
+      "REACT_APP_OPENSEA_URL": "https://opensea.io"
+    }
+  }
+}

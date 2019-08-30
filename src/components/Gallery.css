@@ -1,0 +1,125 @@
+.Gallery {
+  position: absolute;
+  top: 56px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  overflow: auto;
+}
+
+.Gallery.lock {
+  overflow: hidden;
+}
+
+.Gallery .container {
+  margin-top: 64px;
+  margin-bottom: 96px;
+}
+
+.Gallery .overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+}
+
+.Gallery .modal {
+  position: relative;
+  background: white;
+  box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.24);
+  width: calc(100% - 385px);
+  height: calc(100vh - 150px);
+}
+
+.Gallery .modal .image {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.Gallery .modal .owner {
+  position: absolute;
+  bottom: 16px;
+  left: 24px;
+  margin: 0px;
+}
+
+.Gallery .modal .close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  cursor: pointer;
+}
+
+.Gallery .modal .buy {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.Gallery .modal .price {
+  margin-right: 16px;
+}
+
+.Gallery .loader {
+  text-align: center;
+  margin: 16px;
+  color: #7e818b !important;
+}
+
+.Picture {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transform: translateY(0px);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.08);
+  border: 1px solid #00000005;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 202px;
+  background: white;
+}
+
+.Picture:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.12);
+}
+
+.Picture .price {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+
+.Picture .tag {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  background: white;
+}
+
+.Picture img {
+  max-height: 200px;
+}
+
+@media (max-width: 768px) {
+  .Gallery .container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .Gallery .modal {
+    width: 100%;
+    height: calc(100vh - 150px);
+  }
+}

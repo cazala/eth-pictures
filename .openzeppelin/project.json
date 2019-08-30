@@ -1,0 +1,16 @@
+{
+  "manifestVersion": "2.2",
+  "contracts": {
+    "EthPictures": "EthPictures"
+  },
+  "dependencies": {},
+  "name": "eth.pictures",
+  "version": "0.1.0",
+  "compiler": {
+    "manager": "openzeppelin",
+    "solcVersion": "0.5.11",
+    "compilerSettings": {
+      "optimizer": {}
+    }
+  }
+}
