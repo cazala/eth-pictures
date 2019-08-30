@@ -112,13 +112,13 @@
 }
 
 .Canvas .ColorPicker.front {
-  left: 4px;
-  bottom: 12px;
+  left: 8px;
+  bottom: 16px;
 }
 
 .Canvas .ColorPicker.back {
-  left: 12px;
-  bottom: 4px;
+  left: 16px;
+  bottom: 8px;
 }
 
 .Canvas .ColorPicker.back .chrome-picker {
@@ -126,7 +126,7 @@
 }
 
 .Canvas .StrokePicker {
-  left: 40px;
+  left: 44px;
   bottom: 8px;
 }
 

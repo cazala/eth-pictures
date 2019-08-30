@@ -1,12 +1,12 @@
 .ColorPicker .current {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   user-select: none;
 }
 
 .ColorPicker .fill {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 4px;
   cursor: pointer;
   border: 1px solid #7e818b;
