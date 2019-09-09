@@ -1,6 +1,6 @@
 # ETH Pictures
 
-This tool is an experiment I made to use decentralized infrastructure.
+This tool is an experiment I did to play with decentralized infrastructure.
 
 The images are uploaded to [IPFS](https://ipfs.io), and an NFT (non-fungible token) is minted in the Ethereum blockchain to represent each picture.
 

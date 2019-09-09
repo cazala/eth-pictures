@@ -8,7 +8,8 @@ export const About: React.FC = () => {
       <div>
         <header>What's this?</header>
         <p>
-          This tool is an experiment I made to use decentralized infrastructure.
+          This tool is an experiment I did to play with decentralized
+          infrastructure.
         </p>
         <p>
           The images are uploaded to{' '}
