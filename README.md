@@ -71,3 +71,11 @@ REACT_APP_OPENSEA_URL=https://rinkeby.opensea.io
 ```
 
 That address is an actual instance of the contract deployed to Rinkeby: [link to Etherscan](https://rinkeby.etherscan.io/address/0xd9284b013f9237baa3d884dca36fa1658430b178).
+
+## Troubleshooting
+
+If your build is failing due to a problem with `src/contracts/EthPicturesAbi.ts` try typing the ABI as `any`, by changing the last line in that file to the following:
+
+```tsx
+] as any)
+```
