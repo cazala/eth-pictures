@@ -79,3 +79,4 @@ If your build is failing due to a problem with `src/contracts/EthPicturesAbi.ts`
 ```tsx
 ] as any)
 ```
+
