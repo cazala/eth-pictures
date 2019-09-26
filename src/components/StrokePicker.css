@@ -10,6 +10,7 @@
 .StrokePicker .current .size {
   border-radius: 32px;
   background: black;
+  border: 1px solid white;
 }
 
 .StrokePicker .rc-slider {
@@ -21,6 +22,7 @@
 
 .StrokePicker .rc-slider .rc-slider-track {
   background: black;
+  border: 1px solid white;
 }
 
 .StrokePicker .rc-slider .rc-slider-handle {
