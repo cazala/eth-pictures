@@ -22,26 +22,13 @@ $ mv .env.example .env
 $ npm install
 ```
 
-2. Compile contracts
-
-```
-$ npm install -g @openzeppelin/cli
-$ openzeppelin compile
-```
-
-3. Generate TypeScript interfaces
-
-```
-$ npm run contracts
-```
-
-4. Start dev-server
+2. Start dev-server
 
 ```
 $ npm start
 ```
 
-5. Production build
+3. Production build
 
 ```
 $ npm run build
@@ -59,6 +46,26 @@ INFURA_TOKEN=b013...
 Then use `openzeppelin create` command and follow the interactive steps to deploy your contract.
 
 To use this new contract just update the `REACT_APP_CONTRACT_ADDRESS` environment variable.
+
+## Modifying the contract
+
+If you make changes to `contracts/EthPictures.sol` you will need to do the following afterwards:
+
+1. Compile contracts
+
+```
+$ npm install -g @openzeppelin/cli
+$ openzeppelin compile
+```
+
+2. Generate TypeScript interfaces
+
+```
+$ npm run contracts
+```
+
+If you have problems compiling your app after this, check out the [Troubleshooting](https://github.com/cazala/eth-pictures/blob/master/README.md#troubleshooting) section.
+
 
 ## Rinkeby
 
@@ -79,3 +86,4 @@ If your build is failing due to a problem with `src/contracts/EthPicturesAbi.ts`
 ```tsx
 ] as any)
 ```
+
