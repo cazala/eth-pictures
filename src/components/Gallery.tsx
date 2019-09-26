@@ -27,8 +27,10 @@ export const Picture: React.FC<{
       onClick={useCallback(() => onClick(asset), [asset])}
     >
       <img src={asset.image} />
-      {asset.price && <div className="price">{format(asset.price)}</div>}
-      {isOwner ? <div className="tag is-small">It's Yours</div> : null}
+      {asset.price && (
+        <div className="tag is-small price">{format(asset.price)}</div>
+      )}
+      {isOwner ? <div className="tag is-small owner">It's Yours</div> : null}
     </div>
   )
 }
@@ -76,16 +78,16 @@ export const Gallery: React.FC = () => {
               className="image"
               style={{ backgroundImage: `url(${selected.image})` }}
             ></div>
-            <p className="owner">
+            <p className="owner contrast">
               <b>Owner:</b>{' '}
               {isOwner
                 ? 'You!'
                 : selected.owner.slice(0, 6) + '...' + selected.owner.slice(-4)}
             </p>
             <div className="buy">
-              <div className="price">
-                {selected.price ? format(selected.price) : null}
-              </div>
+              {selected.price ? (
+                <div className="price contrast">{format(selected.price)}</div>
+              ) : null}
               <a
                 className="button outline"
                 href={`${OPEANSEA_URL}/assets/${CONTRACT_ADDRESS}/${selected.id}`}

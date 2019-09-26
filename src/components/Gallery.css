@@ -67,6 +67,18 @@
   align-items: center;
 }
 
+.Gallery .buy .button {
+  background: white;
+  border-color: var(--color-darkGrey);
+}
+
+.Gallery .contrast {
+  background: #000000c0;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 16px;
+}
+
 .Gallery .modal .price {
   margin-right: 16px;
 }
@@ -95,17 +107,20 @@
   box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.12);
 }
 
-.Picture .price {
+.Picture .tag {
   position: absolute;
+  background: white;
+  color: black;
+}
+
+.Picture .price {
   bottom: 8px;
   right: 16px;
 }
 
-.Picture .tag {
-  position: absolute;
+.Picture .owner {
   left: 16px;
   top: 16px;
-  background: white;
 }
 
 .Picture img {
