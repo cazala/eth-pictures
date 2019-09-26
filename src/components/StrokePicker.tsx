@@ -22,7 +22,14 @@ export const StrokePicker: React.FC<Props> = ({
   return (
     <div className="StrokePicker" onMouseDown={stopPropagation}>
       <div className="current" onClick={toggle}>
-        <div className="size" style={{ width: stroke, height: stroke }} />
+        <div
+          className="size"
+          style={{
+            // +2 for border
+            width: stroke + 2,
+            height: stroke + 2
+          }}
+        />
       </div>
       {isOpen && (
         <Slider
