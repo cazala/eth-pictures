@@ -124,11 +124,19 @@ export const Canvas: React.FC = () => {
     }
   }, [isSent])
 
+  // confirm before closing the window
+  useEffect(() => {
+    window.onbeforeunload = () => (isDirty ? true : null) // ask for confirmation
+    return () => {
+      window.onbeforeunload = () => null // stop asking for confirmation
+    }
+  }, [isDirty])
+
   return (
     <div className="Canvas">
       <AutoSizer>
         {outter => (
-          <div className="center" onMouseUp={onDirty} onTouchEnd={onDirty}>
+          <div className="center outer">
             <ResizableBox
               width={600}
               height={400}
@@ -139,7 +147,11 @@ export const Canvas: React.FC = () => {
             >
               <AutoSizer>
                 {inner => (
-                  <>
+                  <div
+                    className="center inner"
+                    onMouseUp={onDirty}
+                    onTouchEnd={onDirty}
+                  >
                     {isUploaded ? (
                       <img
                         className="preview"
@@ -288,7 +300,7 @@ export const Canvas: React.FC = () => {
                         </button>
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
               </AutoSizer>
             </ResizableBox>
