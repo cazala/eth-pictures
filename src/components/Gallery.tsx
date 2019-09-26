@@ -1,11 +1,14 @@
 import React, { useState, useCallback } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
+
 import { useOpenSea } from '../hooks/opensea'
 import { Asset, OPEANSEA_URL } from '../lib/opensea'
-
-import './Gallery.css'
 import { CONTRACT_ADDRESS } from '../lib/eth'
 import { useEth } from '../hooks/eth'
+
+import closeIcon from '../images/close.svg'
+
+import './Gallery.css'
 
 const format = (price: number) =>
   '$' + Number(price.toFixed(2)).toLocaleString()
@@ -66,7 +69,7 @@ export const Gallery: React.FC = () => {
           <div className="modal" onClick={e => e.stopPropagation()}>
             <img
               className="close"
-              src="https://icongr.am/clarity/close.svg?color=000000"
+              src={closeIcon}
               onClick={() => setSelected(null)}
             ></img>
             <div

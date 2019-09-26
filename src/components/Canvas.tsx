@@ -10,9 +10,14 @@ import { useNavigate } from '../hooks/router'
 import { getMetadataUrl, getInfuraUrl } from '../lib/url'
 import { ColorPicker } from './ColorPicker'
 import { StrokePicker } from './StrokePicker'
+import { isMobile } from '../lib/mobile'
+
+import loaderIcon from '../images/loader.svg'
+import successIcon from '../images/success-standard.svg'
+import walletIcon from '../images/wallet.svg'
+import errorIcon from '../images/error.svg'
 
 import './Canvas.css'
-import { isMobile } from '../lib/mobile'
 
 export const Canvas: React.FC = () => {
   // state
@@ -158,10 +163,7 @@ export const Canvas: React.FC = () => {
                       <div className="overlay">
                         {isUploading && (
                           <>
-                            <img
-                              className="spinner"
-                              src="https://icongr.am/feather/loader.svg?color=ffffff"
-                            />
+                            <img className="spinner" src={loaderIcon} />
                             <p className="status">
                               Uploading image to the{' '}
                               <a
@@ -178,10 +180,7 @@ export const Canvas: React.FC = () => {
                         )}
                         {isWaiting && (
                           <>
-                            <img
-                              className="spinner"
-                              src="https://icongr.am/feather/loader.svg?color=ffffff"
-                            />
+                            <img className="spinner" src={loaderIcon} />
                             <p className="status">
                               Waiting for confirmation&hellip;
                             </p>
@@ -189,10 +188,7 @@ export const Canvas: React.FC = () => {
                         )}
                         {isSent && (
                           <>
-                            <img
-                              className="success"
-                              src="https://icongr.am/clarity/success-standard.svg?color=28bd14"
-                            />
+                            <img className="success" src={successIcon} />
                             <p className="status">
                               Your NFT will be minted soon!
                               <br />
@@ -216,10 +212,7 @@ export const Canvas: React.FC = () => {
                         )}
                         {walletNotDetected && (
                           <>
-                            <img
-                              className="info"
-                              src="https://icongr.am/clarity/wallet.svg?color=ffffff"
-                            />
+                            <img className="info" src={walletIcon} />
                             <p className="status">
                               <b>Wallet not found!</b>
                               <br />
@@ -257,10 +250,7 @@ export const Canvas: React.FC = () => {
                         )}
                         {error && (
                           <>
-                            <img
-                              className="error"
-                              src="https://icongr.am/clarity/error.svg?color=ffff04"
-                            />
+                            <img className="error" src={errorIcon} />
                             <p className="error">{error}</p>
                             <button
                               className="button outline"

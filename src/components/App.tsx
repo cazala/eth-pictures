@@ -6,6 +6,9 @@ import { Canvas } from './Canvas'
 import { About } from './About'
 import { Gallery } from './Gallery'
 
+import githubIcon from '../images/github.svg'
+import twitterIcon from '../images/twitter.svg'
+
 import './App.css'
 
 const getItemClass = (current: string, target: string) => {
@@ -50,14 +53,14 @@ export const App: React.FC = () => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <img src="https://icongr.am/feather/github.svg?color=7e818b&size=20"></img>
+          <img src={githubIcon}></img>
         </a>
         <a
           href="https://twitter.com/EthPictures"
           target="_blank"
           rel="noreferrer noopener"
         >
-          <img src="https://icongr.am/feather/twitter.svg?color=7e818b&size=20"></img>
+          <img src={twitterIcon}></img>
         </a>
       </div>
       <div className="credits">
