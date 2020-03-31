@@ -4,9 +4,6 @@ export const OPEANSEA_API = process.env.REACT_APP_OPENSEA_API
 export const OPEANSEA_URL = process.env.REACT_APP_OPENSEA_URL
 export const PAGE_SIZE = 48
 
-console.log('OPEANSEA_API', OPEANSEA_API)
-console.log('OPEANSEA_URL', OPEANSEA_URL)
-
 export type Asset = {
   id: string
   image: string
