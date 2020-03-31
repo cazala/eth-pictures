@@ -53,14 +53,14 @@ export const App: React.FC = () => {
           target="_blank"
           rel="noreferrer noopener"
         >
-          <img src={githubIcon}></img>
+          <img src={githubIcon} alt="github"></img>
         </a>
         <a
           href="https://twitter.com/EthPictures"
           target="_blank"
           rel="noreferrer noopener"
         >
-          <img src={twitterIcon}></img>
+          <img src={twitterIcon} alt="twitter"></img>
         </a>
       </div>
       <div className="credits">

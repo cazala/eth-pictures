@@ -24,9 +24,9 @@ export const Picture: React.FC<{
   return (
     <div
       className="Picture col-4 col-3-md col-2-lg"
-      onClick={useCallback(() => onClick(asset), [asset])}
+      onClick={useCallback(() => onClick(asset), [asset, onClick])}
     >
-      <img src={asset.image} />
+      <img src={asset.image} alt="drawing" />
       {asset.price && (
         <div className="tag is-small price">{format(asset.price)}</div>
       )}
@@ -73,6 +73,7 @@ export const Gallery: React.FC = () => {
               className="close"
               src={closeIcon}
               onClick={() => setSelected(null)}
+              alt="close"
             ></img>
             <div
               className="image"
@@ -92,6 +93,7 @@ export const Gallery: React.FC = () => {
                 className="button outline"
                 href={`${OPEANSEA_URL}/assets/${CONTRACT_ADDRESS}/${selected.id}`}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 {selected.price
                   ? isOwner

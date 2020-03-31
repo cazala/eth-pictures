@@ -158,6 +158,7 @@ export const Canvas: React.FC = () => {
                         src={getInfuraUrl(hash!)}
                         width={inner.width}
                         height={inner.height}
+                        alt="preview"
                       />
                     ) : (
                       isMounted && (
@@ -175,7 +176,11 @@ export const Canvas: React.FC = () => {
                       <div className="overlay">
                         {isUploading && (
                           <>
-                            <img className="spinner" src={loaderIcon} />
+                            <img
+                              className="spinner"
+                              src={loaderIcon}
+                              alt="loading"
+                            />
                             <p className="status">
                               Uploading image to the{' '}
                               <a
@@ -192,7 +197,11 @@ export const Canvas: React.FC = () => {
                         )}
                         {isWaiting && (
                           <>
-                            <img className="spinner" src={loaderIcon} />
+                            <img
+                              className="spinner"
+                              src={loaderIcon}
+                              alt="loading"
+                            />
                             <p className="status">
                               Waiting for confirmation&hellip;
                             </p>
@@ -200,7 +209,11 @@ export const Canvas: React.FC = () => {
                         )}
                         {isSent && (
                           <>
-                            <img className="success" src={successIcon} />
+                            <img
+                              className="success"
+                              src={successIcon}
+                              alt="success"
+                            />
                             <p className="status">
                               Your NFT will be minted soon!
                               <br />
@@ -224,7 +237,7 @@ export const Canvas: React.FC = () => {
                         )}
                         {walletNotDetected && (
                           <>
-                            <img className="info" src={walletIcon} />
+                            <img className="info" src={walletIcon} alt="info" />
                             <p className="status">
                               <b>Wallet not found!</b>
                               <br />
@@ -262,7 +275,11 @@ export const Canvas: React.FC = () => {
                         )}
                         {error && (
                           <>
-                            <img className="error" src={errorIcon} />
+                            <img
+                              className="error"
+                              src={errorIcon}
+                              alt="error"
+                            />
                             <p className="error">{error}</p>
                             <button
                               className="button outline"
