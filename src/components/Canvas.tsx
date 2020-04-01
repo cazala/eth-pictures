@@ -22,7 +22,7 @@ import './Canvas.css'
 const INITIAL_WIDTH = 600
 const INITIAL_HEIGHT = 400
 const HORIZONTAL_PADDING = 24
-const VERTICAL_PADDING = 100
+const VERTICAL_PADDING = 72
 
 export const Canvas: React.FC = () => {
   // state
