@@ -273,11 +273,11 @@ export const Canvas: React.FC = () => {
                                   <>
                                     You can install the{' '}
                                     <a
-                                      href="https://trustwallet.com/"
+                                      href="https://wallet.coinbase.com/"
                                       target="_blank"
                                       rel="noopener noreferrer"
                                     >
-                                      TrustWallet
+                                      Coinbase Wallet
                                     </a>{' '}
                                     app.
                                   </>
