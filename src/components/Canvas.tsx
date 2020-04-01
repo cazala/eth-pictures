@@ -19,6 +19,11 @@ import errorIcon from '../images/error.svg'
 
 import './Canvas.css'
 
+const INITIAL_WIDTH = 600
+const INITIAL_HEIGHT = 400
+const HORIZONTAL_PADDING = 24
+const VERTICAL_PADDING = 100
+
 export const Canvas: React.FC = () => {
   // state
   const [color, setColor] = useState(() => {
@@ -135,194 +140,205 @@ export const Canvas: React.FC = () => {
   return (
     <div className="Canvas">
       <AutoSizer>
-        {outter => (
-          <div className="center outer">
-            <ResizableBox
-              width={600}
-              height={400}
-              axis="both"
-              maxConstraints={[outter.width - 48, outter.height - 200]}
-              minConstraints={[300, 250]}
-              lockAspectRatio={isLocked}
-            >
-              <AutoSizer>
-                {inner => (
-                  <div
-                    className="center inner"
-                    onMouseUp={onDirty}
-                    onTouchEnd={onDirty}
-                  >
-                    {isUploaded ? (
-                      <img
-                        className="preview"
-                        src={getInfuraUrl(hash!)}
-                        width={inner.width}
-                        height={inner.height}
-                        alt="preview"
-                      />
-                    ) : (
-                      isMounted && (
-                        <SketchField
-                          width={`${inner.width}px`}
-                          height={`${inner.height}px`}
-                          tool={Tools.Pencil}
-                          lineColor={color}
-                          lineWidth={stroke}
-                          backgroundColor={background}
+        {outter => {
+          const maxWidth = outter.width - HORIZONTAL_PADDING * 2
+          const maxHeight = outter.height - VERTICAL_PADDING * 2
+          return (
+            <div className="center outer">
+              <ResizableBox
+                width={Math.min(INITIAL_WIDTH, maxWidth)}
+                height={Math.min(INITIAL_HEIGHT, maxHeight)}
+                axis="both"
+                maxConstraints={[maxWidth, maxHeight]}
+                minConstraints={[300, 250]}
+                lockAspectRatio={isLocked}
+              >
+                <AutoSizer>
+                  {inner => (
+                    <div
+                      className="center inner"
+                      onMouseUp={onDirty}
+                      onTouchEnd={onDirty}
+                    >
+                      {isUploaded ? (
+                        <img
+                          className="preview"
+                          src={getInfuraUrl(hash!)}
+                          width={inner.width}
+                          height={inner.height}
+                          alt="preview"
                         />
-                      )
-                    )}
-                    {hasOverlay ? (
-                      <div className="overlay">
-                        {isUploading && (
-                          <>
-                            <img
-                              className="spinner"
-                              src={loaderIcon}
-                              alt="loading"
-                            />
-                            <p className="status">
-                              Uploading image to the{' '}
-                              <a
-                                href="https://ipfs.io"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                InterPlanetary File System
-                              </a>
-                              .<br />
-                              This may take a few seconds&hellip;
-                            </p>
-                          </>
-                        )}
-                        {isWaiting && (
-                          <>
-                            <img
-                              className="spinner"
-                              src={loaderIcon}
-                              alt="loading"
-                            />
-                            <p className="status">
-                              Waiting for confirmation&hellip;
-                            </p>
-                          </>
-                        )}
-                        {isSent && (
-                          <>
-                            <img
-                              className="success"
-                              src={successIcon}
-                              alt="success"
-                            />
-                            <p className="status">
-                              Your NFT will be minted soon!
-                              <br />
-                              In the meantime you can check the gallery.
-                            </p>
-                            <div className="actions">
-                              <button
-                                className="button clear"
-                                onClick={onClear}
-                              >
-                                Back
-                              </button>
+                      ) : (
+                        isMounted && (
+                          <SketchField
+                            width={`${inner.width}px`}
+                            height={`${inner.height}px`}
+                            tool={Tools.Pencil}
+                            lineColor={color}
+                            lineWidth={stroke}
+                            backgroundColor={background}
+                          />
+                        )
+                      )}
+                      {hasOverlay ? (
+                        <div className="overlay">
+                          {isUploading && (
+                            <>
+                              <img
+                                className="spinner"
+                                src={loaderIcon}
+                                alt="loading"
+                              />
+                              <p className="status">
+                                Uploading image to the{' '}
+                                <a
+                                  href="https://ipfs.io"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  InterPlanetary File System
+                                </a>
+                                .<br />
+                                This may take a few seconds&hellip;
+                              </p>
+                            </>
+                          )}
+                          {isWaiting && (
+                            <>
+                              <img
+                                className="spinner"
+                                src={loaderIcon}
+                                alt="loading"
+                              />
+                              <p className="status">
+                                Waiting for confirmation&hellip;
+                              </p>
+                            </>
+                          )}
+                          {isSent && (
+                            <>
+                              <img
+                                className="success"
+                                src={successIcon}
+                                alt="success"
+                              />
+                              <p className="status">
+                                Your NFT will be minted soon!
+                                <br />
+                                In the meantime you can check the gallery.
+                              </p>
+                              <div className="actions">
+                                <button
+                                  className="button clear"
+                                  onClick={onClear}
+                                >
+                                  Back
+                                </button>
+                                <button
+                                  className="button outline"
+                                  onClick={onGallery}
+                                >
+                                  Gallery
+                                </button>
+                              </div>
+                            </>
+                          )}
+                          {walletNotDetected && (
+                            <>
+                              <img
+                                className="info"
+                                src={walletIcon}
+                                alt="info"
+                              />
+                              <p className="status">
+                                <b>Wallet not found!</b>
+                                <br />
+                                <br />
+                                You need a wallet to interact with the Ethereum
+                                blockchain.
+                                <br />
+                                {!isMobile() ? (
+                                  <>
+                                    You can install the{' '}
+                                    <a
+                                      href="https://www.meetdapper.com/"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      Dapper
+                                    </a>{' '}
+                                    wallet.
+                                  </>
+                                ) : (
+                                  <>
+                                    You can install the{' '}
+                                    <a
+                                      href="https://trustwallet.com/"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      TrustWallet
+                                    </a>{' '}
+                                    app.
+                                  </>
+                                )}
+                              </p>
+                            </>
+                          )}
+                          {error && (
+                            <>
+                              <img
+                                className="error"
+                                src={errorIcon}
+                                alt="error"
+                              />
+                              <p className="error">{error}</p>
                               <button
                                 className="button outline"
-                                onClick={onGallery}
+                                onClick={onReset}
                               >
-                                Gallery
+                                Ok...
                               </button>
-                            </div>
-                          </>
-                        )}
-                        {walletNotDetected && (
+                            </>
+                          )}
+                        </div>
+                      ) : (
+                        !isUploaded && (
                           <>
-                            <img className="info" src={walletIcon} alt="info" />
-                            <p className="status">
-                              <b>Wallet not found!</b>
-                              <br />
-                              <br />
-                              You need a wallet to interact with the Ethereum
-                              blockchain.
-                              <br />
-                              {!isMobile() ? (
-                                <>
-                                  You can install the{' '}
-                                  <a
-                                    href="https://www.meetdapper.com/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    Dapper
-                                  </a>{' '}
-                                  wallet.
-                                </>
-                              ) : (
-                                <>
-                                  You can install the{' '}
-                                  <a
-                                    href="https://trustwallet.com/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    TrustWallet
-                                  </a>{' '}
-                                  app.
-                                </>
-                              )}
-                            </p>
-                          </>
-                        )}
-                        {error && (
-                          <>
-                            <img
-                              className="error"
-                              src={errorIcon}
-                              alt="error"
+                            <ColorPicker
+                              className="back"
+                              color={background}
+                              onChange={setBackground}
                             />
-                            <p className="error">{error}</p>
-                            <button
-                              className="button outline"
-                              onClick={onReset}
-                            >
-                              Ok...
-                            </button>
+                            <ColorPicker
+                              className="front"
+                              color={color}
+                              onChange={setColor}
+                            />
+                            <StrokePicker
+                              stroke={stroke}
+                              onChange={setStroke}
+                            />
                           </>
-                        )}
-                      </div>
-                    ) : (
-                      !isUploaded && (
-                        <>
-                          <ColorPicker
-                            className="back"
-                            color={background}
-                            onChange={setBackground}
-                          />
-                          <ColorPicker
-                            className="front"
-                            color={color}
-                            onChange={setColor}
-                          />
-                          <StrokePicker stroke={stroke} onChange={setStroke} />
-                        </>
-                      )
-                    )}
-                    {isMenuVisible && (
-                      <div className="buttons">
-                        <button className="button clear" onClick={onClear}>
-                          Clear
-                        </button>
-                        <button className="button outline" onClick={onSubmit}>
-                          Submit
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </AutoSizer>
-            </ResizableBox>
-          </div>
-        )}
+                        )
+                      )}
+                      {isMenuVisible && (
+                        <div className="buttons">
+                          <button className="button clear" onClick={onClear}>
+                            Clear
+                          </button>
+                          <button className="button outline" onClick={onSubmit}>
+                            Submit
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </AutoSizer>
+              </ResizableBox>
+            </div>
+          )
+        }}
       </AutoSizer>
     </div>
   )

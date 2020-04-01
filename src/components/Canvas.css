@@ -138,14 +138,3 @@
     transform: rotate(1turn);
   }
 }
-
-@media (max-width: 768px) {
-  .Canvas .center {
-    transform: translateY(-30px);
-  }
-
-  .Canvas .actions {
-    display: flex;
-    flex-flow: column-reverse;
-  }
-}
