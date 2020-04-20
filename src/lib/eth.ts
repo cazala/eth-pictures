@@ -1,9 +1,14 @@
 import { Eth } from 'web3x-es/eth'
 import { Address } from 'web3x-es/address'
+import { WebsocketProvider } from 'web3x-es/providers'
 import { EthPictures } from '../contracts/EthPictures'
 import { isMobile } from './mobile'
+import { Medianizer } from '../contracts/Medianizer'
+import { fromWei } from 'web3x-es/utils'
 
 export const CONTRACT_ADDRESS = process.env.REACT_APP_CONTRACT_ADDRESS
+export const INFURA_TOKEN = process.env.REACT_APP_INFURA_TOKEN
+export const MEDIANIZER_ADDRESS = '0x729D19f657BD0614b4985Cf1D82531c67569197B'
 
 export const NO_WALLET_ERROR = 'NoWalletError'
 
@@ -52,15 +57,15 @@ let usd = 0
 
 export async function getPrice() {
   if (!usd) {
-    const resp = await fetch('https://api.cryptonator.com/api/ticker/eth-usd')
-    const json = await resp.json()
-    const data = json.ticker
-    if (data) {
-      const price = Number(data.price)
-      if (price) {
-        usd = price
-      }
-    }
+    const url = `wss://mainnet.infura.io/ws/v3/${INFURA_TOKEN}`
+    const provider = new WebsocketProvider(url)
+    const eth = new Eth(provider)
+    const medianizer = new Medianizer(
+      eth,
+      Address.fromString(MEDIANIZER_ADDRESS)
+    )
+    const resp = await medianizer.methods.compute().call()
+    usd = parseFloat(fromWei(resp[0], 'ether'))
   }
   return usd
 }

@@ -110,7 +110,10 @@
 }
 
 .Canvas .ColorPicker,
-.Canvas .StrokePicker {
+.Canvas .StrokePicker,
+.Canvas .ToolPicker,
+.Canvas .AddImage,
+.Canvas .AddText {
   position: absolute;
 }
 
@@ -131,6 +134,31 @@
 .Canvas .StrokePicker {
   left: 44px;
   bottom: 8px;
+}
+
+.Canvas .ToolPicker {
+  top: 8px;
+  left: 8px;
+}
+
+.Canvas .AddImage {
+  top: 8px;
+  right: 32px;
+}
+.Canvas .AddText {
+  top: 8px;
+  right: 8px;
+}
+
+.Canvas.pencil canvas,
+.Canvas.line canvas,
+.Canvas.rectangle canvas,
+.Canvas.circle canvas {
+  cursor: crosshair !important;
+}
+
+.Canvas.pan canvas {
+  cursor: move !important;
 }
 
 @keyframes spin {

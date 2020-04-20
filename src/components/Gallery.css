@@ -47,7 +47,7 @@
 
 .Gallery .modal .owner {
   position: absolute;
-  bottom: 16px;
+  top: 24px;
   left: 24px;
   margin: 0px;
 }

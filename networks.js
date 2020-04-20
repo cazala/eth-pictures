@@ -10,29 +10,29 @@ module.exports = {
       port: 8545,
       gas: 5000000,
       gasPrice: 5e9,
-      networkId: '*'
+      networkId: '*',
     },
     rinkeby: {
-      provider: function() {
+      provider: function () {
         return new HDWalletProvider(
           process.env.MNEMONIC,
-          `https://rinkeby.infura.io/v3/${process.env.INFURA_TOKEN}`
+          `https://rinkeby.infura.io/v3/${process.env.REACT_APP_INFURA_TOKEN}`
         )
       },
       gas: 5000000,
       gasPrice: 5e9,
-      network_id: 4
+      network_id: 4,
     },
     mainnet: {
-      provider: function() {
+      provider: function () {
         return new HDWalletProvider(
           process.env.MNEMONIC,
-          `https://mainnet.infura.io/v3/${process.env.INFURA_TOKEN}`
+          `https://mainnet.infura.io/v3/${process.env.REACT_APP_INFURA_TOKEN}`
         )
       },
       gas: 5000000,
       gasPrice: 5e9,
-      network_id: 1
-    }
-  }
+      network_id: 1,
+    },
+  },
 }

@@ -4,6 +4,11 @@
     "EthPictures": {
       "source": "truffle",
       "buildFile": "./build/contracts/EthPictures.json"
+    },
+    "Medianizer": {
+      "source": "etherscan",
+      "net": "mainnet",
+      "address": "0x729D19f657BD0614b4985Cf1D82531c67569197B"
     }
   }
 }

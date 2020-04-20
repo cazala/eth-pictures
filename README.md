@@ -16,6 +16,8 @@ The gallery data is pulled from [OpenSea](https://opensea.io)'s API.
 $ mv .env.example .env
 ```
 
+Add your `REACT_APP_INFURA_TOKEN`
+
 1. Install dependencies
 
 ```
@@ -36,11 +38,11 @@ $ npm run build
 
 ## Deploy your own contract
 
-You need to fill the `MNEMONIC` and `INFURA_TOKEN` environment variables in your `.env` file:
+You need to fill the `MNEMONIC` and `REACT_APP_INFURA_TOKEN` environment variables in your `.env` file:
 
 ```
 MNEMONIC="bunker satoshi food..."
-INFURA_TOKEN=b013...
+REACT_APP_INFURA_TOKEN=b013...
 ```
 
 Then use `openzeppelin create` command and follow the interactive steps to deploy your contract.
@@ -66,7 +68,6 @@ $ npm run contracts
 
 If you have problems compiling your app after this, check out the [Troubleshooting](https://github.com/cazala/eth-pictures/blob/master/README.md#troubleshooting) section.
 
-
 ## Rinkeby
 
 To use the Rinkeby testnet you need to point to a Rinkeby contract (you can deploy your own or use the one shown below), and also point to OpenSea's rinkeby API, like this:
@@ -86,4 +87,3 @@ If your build is failing due to a problem with `src/contracts/EthPicturesAbi.ts`
 ```tsx
 ] as any)
 ```
-

@@ -1,16 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { ResizableBox } from 'react-resizable'
 import { AutoSizer } from 'react-virtualized'
-import { SketchField, Tools } from 'react-sketch'
+import { SketchField, Tools, ISketch } from 'react-sketch'
+import useMousetrap from 'react-hook-mousetrap'
 import * as dataUriToBuffer from 'data-uri-to-buffer'
 
 import { useIPFS } from '../hooks/ipfs'
 import { useEth } from '../hooks/eth'
 import { useNavigate } from '../hooks/router'
+import { ContrastContext, getContrast } from '../lib/contrast'
+import { isMobile } from '../lib/mobile'
 import { getMetadataUrl, getInfuraUrl } from '../lib/url'
 import { ColorPicker } from './ColorPicker'
 import { StrokePicker } from './StrokePicker'
-import { isMobile } from '../lib/mobile'
+import { ToolPicker } from './ToolPicker'
+import { AddImage } from './AddImage'
+import { AddText } from './AddText'
 
 import loaderIcon from '../images/loader.svg'
 import successIcon from '../images/success-standard.svg'
@@ -19,10 +24,12 @@ import errorIcon from '../images/error.svg'
 
 import './Canvas.css'
 
-const INITIAL_WIDTH = 600
-const INITIAL_HEIGHT = 400
+const INITIAL_WIDTH = 1024
+const INITIAL_HEIGHT = 768
 const HORIZONTAL_PADDING = 24
 const VERTICAL_PADDING = 72
+const DEFAULT_BACKGROUND = '#FFFFFF'
+const LOCAL_STORAGE_KEY = 'eth-pictures-draft'
 
 export const Canvas: React.FC = () => {
   // state
@@ -37,21 +44,22 @@ export const Canvas: React.FC = () => {
       '#ABB8C3',
       '#EB144C',
       '#F78DA7',
-      '#9900EF'
+      '#9900EF',
     ]
     return color[(color.length * Math.random()) | 0]
   })
-  const [background, setBackground] = useState('#FFFFFF')
+  const [background, setBackground] = useState(DEFAULT_BACKGROUND)
+  const [tool, setTool] = useState(Tools.Pencil)
   const [stroke, setStroke] = useState(5)
   const [isDirty, setDirty] = useState(false)
   const [didErrorOcurr, setDidErrorOcurr] = useState(false)
-  const [isMounted, setMounted] = useState(true)
+  const [isQuotaExceeded, setQuotaExceeded] = useState(false)
   let {
     upload,
     hash,
     isUploading,
     error: ipfsError,
-    reset: resetIpfs
+    reset: resetIpfs,
   } = useIPFS()
   let {
     mint,
@@ -59,7 +67,7 @@ export const Canvas: React.FC = () => {
     isSent,
     walletNotDetected,
     error: ethError,
-    reset: resetEth
+    reset: resetEth,
   } = useEth()
 
   // constants
@@ -68,7 +76,10 @@ export const Canvas: React.FC = () => {
     isUploading || isWaiting || isSent || !!error || walletNotDetected
   const isUploaded = !!hash
   const isLocked = isUploaded || hasOverlay
-  const isMenuVisible = (isMounted && isDirty && !hasOverlay) || didErrorOcurr
+  const isMenuVisible = (isDirty && !hasOverlay) || didErrorOcurr
+
+  // refs
+  const sketch = useRef<ISketch | null>(null)
 
   // callbacks
   const onClear = useCallback(() => {
@@ -76,8 +87,10 @@ export const Canvas: React.FC = () => {
     resetEth()
     setDidErrorOcurr(false)
     setDirty(false)
-    setMounted(false)
-  }, [resetIpfs, resetEth])
+    sketch.current && sketch.current.clear()
+    setBackground(DEFAULT_BACKGROUND)
+    localStorage.removeItem(LOCAL_STORAGE_KEY)
+  }, [resetIpfs, resetEth, sketch])
 
   const onSubmit = useCallback(() => {
     setDidErrorOcurr(false)
@@ -102,19 +115,70 @@ export const Canvas: React.FC = () => {
   }, [ipfsError, ethError, resetIpfs, resetEth])
 
   const onDirty = useCallback(() => !isSent && setDirty(true), [isSent])
+
   const onGallery = useNavigate('/gallery')
 
-  // ----effects
+  const onUndo = useCallback(() => sketch.current && sketch.current.undo(), [
+    sketch,
+  ])
 
-  // reset canvas
-  useEffect(() => {
-    if (!isMounted) {
-      requestAnimationFrame(() => {
-        setMounted(true)
-      })
+  const onRedo = useCallback(() => sketch.current && sketch.current.redo(), [
+    sketch,
+  ])
+
+  const onCopy = useCallback(() => sketch.current && sketch.current.copy(), [
+    sketch,
+  ])
+
+  const onPaste = useCallback(() => sketch.current && sketch.current.paste(), [
+    sketch,
+  ])
+
+  const onDelete = useCallback(
+    () => sketch.current && sketch.current.removeSelected(),
+    [sketch]
+  )
+
+  const onChange = useCallback(() => {
+    // save draft
+    try {
+      sketch.current &&
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(sketch.current!.toJSON())
+        )
+      setQuotaExceeded(false)
+    } catch (e) {
+      setQuotaExceeded(true)
+      console.warn('Quota exceeded!')
     }
-  }, [isMounted])
+  }, [sketch])
 
+  const onAddText = useCallback(
+    (text: string) => {
+      sketch.current && sketch.current.addText(text)
+      setDirty(true)
+      setTool(Tools.Select)
+    },
+    [sketch]
+  )
+
+  const onAddImage = useCallback(
+    (dataUrl: string) => sketch.current && sketch.current.addImg(dataUrl),
+    [sketch]
+  )
+
+  // keyboard
+  const isMac = navigator.platform === 'MacIntel'
+  const command = isMac ? 'command' : 'ctrl'
+  useMousetrap(`${command}+z`, onUndo)
+  useMousetrap(`${command}+shift+z`, onRedo)
+  useMousetrap(`${command}+c`, onCopy)
+  useMousetrap(`${command}+v`, onPaste)
+  useMousetrap('backspace', onDelete)
+  useMousetrap('del', onDelete)
+
+  // effects
   useEffect(() => {
     // mint token after upload
     if (hash) {
@@ -126,21 +190,37 @@ export const Canvas: React.FC = () => {
   useEffect(() => {
     if (isSent) {
       setDirty(false)
+      localStorage.removeItem(LOCAL_STORAGE_KEY)
     }
   }, [isSent])
 
+  // restore draft
+  useEffect(() => {
+    if (sketch.current) {
+      const data = localStorage.getItem(LOCAL_STORAGE_KEY)
+      if (data) {
+        const draft = JSON.parse(data)
+        sketch.current.fromJSON(draft)
+        setDirty(true)
+        if (draft.background) {
+          setBackground(draft.background)
+        }
+      }
+    }
+  }, [sketch, setBackground])
+
   // confirm before closing the window
   useEffect(() => {
-    window.onbeforeunload = () => (isDirty ? true : null) // ask for confirmation
+    window.onbeforeunload = () => (isDirty && isQuotaExceeded ? true : null) // ask for confirmation
     return () => {
       window.onbeforeunload = () => null // stop asking for confirmation
     }
-  }, [isDirty])
+  }, [isDirty, isQuotaExceeded])
 
   return (
-    <div className="Canvas">
+    <div className={`Canvas ${tool}`}>
       <AutoSizer>
-        {outter => {
+        {(outter) => {
           const maxWidth = outter.width - HORIZONTAL_PADDING * 2
           const maxHeight = outter.height - VERTICAL_PADDING * 2
           return (
@@ -154,7 +234,7 @@ export const Canvas: React.FC = () => {
                 lockAspectRatio={isLocked}
               >
                 <AutoSizer>
-                  {inner => (
+                  {(inner) => (
                     <div
                       className="center inner"
                       onMouseUp={onDirty}
@@ -169,16 +249,19 @@ export const Canvas: React.FC = () => {
                           alt="preview"
                         />
                       ) : (
-                        isMounted && (
-                          <SketchField
-                            width={`${inner.width}px`}
-                            height={`${inner.height}px`}
-                            tool={Tools.Pencil}
-                            lineColor={color}
-                            lineWidth={stroke}
-                            backgroundColor={background}
-                          />
-                        )
+                        <SketchField
+                          width={`${inner.width}px`}
+                          height={`${inner.height}px`}
+                          tool={tool}
+                          lineColor={color}
+                          fillColor={color}
+                          lineWidth={stroke}
+                          backgroundColor={background}
+                          ref={sketch as any}
+                          onChange={onChange}
+                          widthCorrection={0}
+                          heightCorrection={0}
+                        />
                       )}
                       {hasOverlay ? (
                         <div className="overlay">
@@ -304,7 +387,10 @@ export const Canvas: React.FC = () => {
                         </div>
                       ) : (
                         !isUploaded && (
-                          <>
+                          <ContrastContext.Provider
+                            value={getContrast(background)}
+                          >
+                            <ToolPicker value={tool} onChange={setTool} />
                             <ColorPicker
                               className="back"
                               color={background}
@@ -319,7 +405,9 @@ export const Canvas: React.FC = () => {
                               stroke={stroke}
                               onChange={setStroke}
                             />
-                          </>
+                            <AddImage onAdd={onAddImage} />
+                            <AddText onAdd={onAddText} />
+                          </ContrastContext.Provider>
                         )
                       )}
                       {isMenuVisible && (

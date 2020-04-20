@@ -10,7 +10,16 @@
     "manager": "openzeppelin",
     "solcVersion": "0.5.11",
     "compilerSettings": {
-      "optimizer": {}
+      "optimizer": {
+        "enabled": false,
+        "runs": "200"
+      }
+    },
+    "artifactsDir": "build/contracts",
+    "contractsDir": "contracts",
+    "typechain": {
+      "enabled": false
     }
-  }
+  },
+  "telemetryOptIn": false
 }

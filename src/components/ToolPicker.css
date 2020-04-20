@@ -1,0 +1,27 @@
+.ToolPicker {
+  display: flex;
+}
+
+.ToolPicker .group {
+  display: flex;
+}
+
+.ToolPicker .group + .group {
+  margin-left: 16px;
+}
+
+.Tool {
+  cursor: pointer;
+  opacity: 0.4;
+  width: 20px;
+  height: 20px;
+  user-select: none;
+}
+
+.Tool + .Tool {
+  margin-left: 4px;
+}
+
+.Tool.active {
+  opacity: 1;
+}

@@ -1,0 +1,11 @@
+.AddText {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  user-select: none;
+  opacity: 0.5;
+}
+
+.AddText:hover {
+  opacity: 1;
+}

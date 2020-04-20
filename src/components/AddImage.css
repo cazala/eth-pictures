@@ -1,0 +1,21 @@
+.AddImage {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  user-select: none;
+  opacity: 0.5;
+}
+
+.AddImage:hover {
+  opacity: 1;
+}
+
+.AddImage input {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  opacity: 0;
+  cursor: pointer;
+}
