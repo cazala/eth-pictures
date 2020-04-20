@@ -1,6 +1,6 @@
 {
-  "name": "ipfs-test",
-  "version": "0.1.0",
+  "name": "eth-pictures",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@openzeppelin/cli": "^2.5.2",
