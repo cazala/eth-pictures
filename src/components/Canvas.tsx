@@ -3,7 +3,6 @@ import { ResizableBox } from 'react-resizable'
 import { AutoSizer } from 'react-virtualized'
 import { SketchField, Tools, ISketch } from 'react-sketch'
 import useMousetrap from 'react-hook-mousetrap'
-import * as dataUriToBuffer from 'data-uri-to-buffer'
 
 import { useIPFS } from '../hooks/ipfs'
 import { useEth } from '../hooks/eth'
@@ -23,6 +22,7 @@ import walletIcon from '../images/wallet.svg'
 import errorIcon from '../images/error.svg'
 
 import './Canvas.css'
+import { toBuffer } from '../lib/canvas'
 
 const INITIAL_WIDTH = 1024
 const INITIAL_HEIGHT = 768
@@ -54,6 +54,7 @@ export const Canvas: React.FC = () => {
   const [isDirty, setDirty] = useState(false)
   const [didErrorOcurr, setDidErrorOcurr] = useState(false)
   const [isQuotaExceeded, setQuotaExceeded] = useState(false)
+  const [shouldTriggerSubmit, setShouldTriggerSubmit] = useState(false)
   let {
     upload,
     hash,
@@ -92,27 +93,57 @@ export const Canvas: React.FC = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY)
   }, [resetIpfs, resetEth, sketch])
 
-  const onSubmit = useCallback(() => {
+  const onSave = useCallback(() => {
+    // save draft
+    try {
+      sketch.current &&
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(sketch.current!.toJSON())
+        )
+      setQuotaExceeded(false)
+    } catch (e) {
+      setQuotaExceeded(true)
+    }
+  }, [sketch])
+
+  const onSubmit = useCallback(async () => {
     setDidErrorOcurr(false)
+
+    // if the Select tool is on, disable it and set the shouldTriggerSubmit flag, that will trigger an effect to re-submit
+    if (tool === Tools.Select || 1 > 0) {
+      setTool(Tools.Pencil)
+      // Unselect by removing and undoing
+      if (sketch.current) {
+        // save before
+        onSave()
+        // remove selected element (if any)
+        const history = sketch.current._history.undoList.length
+        sketch.current.removeSelected()
+        const newHistory = sketch.current._history.undoList.length
+        // if history changed, it means something was selected (and deleted), so undo and re-submit
+        if (history !== newHistory) {
+          sketch.current.undo()
+          setShouldTriggerSubmit(true)
+          return
+        }
+      }
+    }
+
     if (!isUploaded) {
       const canvas = document.querySelector('canvas') as HTMLCanvasElement
-      const data = canvas.toDataURL()
-      const buffer = dataUriToBuffer(data)
+      const buffer = await toBuffer(canvas)
       upload(buffer)
     } else {
       mint(getMetadataUrl(hash!))
     }
-  }, [upload, isUploaded, mint, hash])
+  }, [upload, isUploaded, mint, hash, tool, onSave])
 
   const onReset = useCallback(() => {
-    if (ipfsError) {
-      resetIpfs()
-    }
-    if (ethError) {
-      resetEth()
-    }
+    resetIpfs()
+    resetEth()
     setDidErrorOcurr(true)
-  }, [ipfsError, ethError, resetIpfs, resetEth])
+  }, [resetIpfs, resetEth])
 
   const onDirty = useCallback(() => !isSent && setDirty(true), [isSent])
 
@@ -138,21 +169,6 @@ export const Canvas: React.FC = () => {
     () => sketch.current && sketch.current.removeSelected(),
     [sketch]
   )
-
-  const onChange = useCallback(() => {
-    // save draft
-    try {
-      sketch.current &&
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY,
-          JSON.stringify(sketch.current!.toJSON())
-        )
-      setQuotaExceeded(false)
-    } catch (e) {
-      setQuotaExceeded(true)
-      console.warn('Quota exceeded!')
-    }
-  }, [sketch])
 
   const onAddText = useCallback(
     (text: string) => {
@@ -196,7 +212,7 @@ export const Canvas: React.FC = () => {
 
   // restore draft
   useEffect(() => {
-    if (sketch.current) {
+    if (sketch.current && !isUploaded) {
       const data = localStorage.getItem(LOCAL_STORAGE_KEY)
       if (data) {
         const draft = JSON.parse(data)
@@ -207,7 +223,7 @@ export const Canvas: React.FC = () => {
         }
       }
     }
-  }, [sketch, setBackground])
+  }, [sketch, setBackground, isUploaded])
 
   // confirm before closing the window
   useEffect(() => {
@@ -216,6 +232,14 @@ export const Canvas: React.FC = () => {
       window.onbeforeunload = () => null // stop asking for confirmation
     }
   }, [isDirty, isQuotaExceeded])
+
+  // re-submit after disabling select tool
+  useEffect(() => {
+    if (shouldTriggerSubmit) {
+      setShouldTriggerSubmit(false)
+      requestAnimationFrame(() => onSubmit())
+    }
+  }, [shouldTriggerSubmit, onSubmit])
 
   return (
     <div className={`Canvas ${tool}`}>
@@ -258,7 +282,7 @@ export const Canvas: React.FC = () => {
                           lineWidth={stroke}
                           backgroundColor={background}
                           ref={sketch as any}
-                          onChange={onChange}
+                          onChange={onSave}
                           widthCorrection={0}
                           heightCorrection={0}
                         />

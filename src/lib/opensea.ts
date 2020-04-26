@@ -20,10 +20,11 @@ export async function loadPage(page: number) {
       await getPrice(),
       await fetch(
         `${OPEANSEA_API}/api/v1/assets?asset_contract_address=${CONTRACT_ADDRESS}&limit=${limit}&offset=${offset}`
-      )
+      ),
     ])
     const { assets } = await resp.json()
     return assets.map((asset: any) => {
+      console.log(asset)
       let price = null
       if (asset.sell_orders && asset.sell_orders.length > 0) {
         const order = asset.sell_orders[0]
@@ -35,10 +36,10 @@ export async function loadPage(page: number) {
       }
       return {
         id: asset.token_id,
-        image: asset.image_url,
+        image: asset.image_original_url,
         preview: asset.image_preview_url,
         owner: asset.owner.address,
-        price
+        price,
       }
     }) as Asset[]
   } catch (e) {

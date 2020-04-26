@@ -1,5 +1,7 @@
 declare module 'ipfs-http-client'
 declare module 'react-hook-mousetrap'
+declare module 'data-uri-to-buffer'
+declare module 'blob-to-buffer'
 declare module 'react-sketch' {
   interface ISketchJSON {
     version: string
@@ -20,6 +22,7 @@ declare module 'react-sketch' {
     fromJSON: (json: ISketchJSON) => void
     addText: (text: string) => void
     addImg: (dataUrl: string) => void
+    _history: { undoList: string[] }
   }
 
   class SketchField extends React.Component<any> {}
@@ -38,4 +41,3 @@ declare module 'react-sketch' {
 
   export { SketchField, ISketch, Tools }
 }
-declare module 'data-uri-to-buffer'
