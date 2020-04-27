@@ -88,8 +88,14 @@ export const Canvas: React.FC = () => {
     resetEth()
     setDidErrorOcurr(false)
     setDirty(false)
-    sketch.current && sketch.current.clear()
     setBackground(DEFAULT_BACKGROUND)
+    if (sketch.current) {
+      sketch.current.fromJSON({
+        ...sketch.current.toJSON(),
+        objects: [],
+        background: DEFAULT_BACKGROUND,
+      })
+    }
     localStorage.removeItem(LOCAL_STORAGE_KEY)
   }, [resetIpfs, resetEth, sketch])
 
